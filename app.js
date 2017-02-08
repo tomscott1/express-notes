@@ -1,7 +1,17 @@
 var express = require('express');  // express is an application
+var bodyParser = require('body-parser');
 var app = express();
+var jsonParser = bodyParser.json();
+
+var apiController = require('./controllers/apiController');
+apiController(app);
+
+var htmlController = require('./controllers/htmlController');
+htmlController(app);
 
 var port = process.env.PORT || 3000;
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.use('/assets', express.static(__dirname + '/public'));
 
@@ -16,12 +26,7 @@ app.get('/', function(req, res) {
   res.render('index');
 });
 
-app.get('/person/:id', function(req, res) {
-  res.render('person', { ID: req.params.id });
-});
 
-app.get('/api', function (req, res) {
-  res.json({ firstname: 'John', lastname: 'Doe' });
-});
+
 
 app.listen(port);
